@@ -29,7 +29,7 @@ This project is built **without any external libraries** (except for RSpec for t
 - [Project Structure](#project-structure)
 - [Rounding Rules](#rounding-rules)
 - [Testing](#testing)
-- [Assumptions](#assumptions)
+- [Implementation Notes](#implementation-notes)
 
 ---
 
@@ -211,10 +211,15 @@ All rounding rules, parsing, and receipt generation are covered.
 
 ---
 
-## Assumptions
+## Implementation Notes
 
-- Input files are well-formed according to the specified format.
-- Only "books", "food", and "medical products" are tax-exempt.
-- All imported items include the word "imported" in the name.
-- Prices are provided without currency symbols.
-- Tax calculations are **rounded up to the nearest 0.05** as per the problem statement.
+- **Input Format:** Input files are well-formed according to the specified format (`<quantity> <product name> at <price>`). Malformed lines may cause parsing errors.
+- **Tax-Exempt Categories:** Only items categorized as "books", "food", or "medical products" are exempt from basic sales tax. All other items are taxed at 10%.
+- **Imported Items:** All imported items include the word "imported" in the product name. Import duty of 5% applies to these items regardless of category.
+- **Prices:** All prices in the input files are numeric values without currency symbols.
+- **Rounding Rules:** Tax calculations are rounded **up to the nearest 0.05** as per the problem statement. For example:
+   - 1.23 → 1.25
+   - 1.25 → 1.25
+- **Quantity Multiplication:** The total price for an item is calculated as `(unit price * quantity) + taxes`.
+- **File Size:** The application assumes files may be large; streaming is used to handle large input efficiently.
+
