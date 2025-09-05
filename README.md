@@ -75,6 +75,7 @@ This section describes how the Sales Taxes application handles large input files
 1. **File Reading**
     - Instead of reading the entire file into memory (`File.readlines`), the application uses `File.foreach`.
     - This reads **one line at a time**, feeding it directly to the parser.
+    - Now it's possible to process large files without loading the entire file into memory.
 
 2. **Parsing**
     - Each line is parsed incrementally using `Parser.parse_line`.
@@ -95,18 +96,7 @@ receipt = Receipt.new(items_enum)
 receipt.lines.each { |line| puts line }
 ```
 
-### Benefits
-
-- **Memory-efficient:** Can handle files with millions of items.
-- **SOLID-compliant:** `Receipt` handles data generation; `main.rb` handles output.
-- **Testable:** Lines can be iterated and asserted without relying on console output.
-- **Flexible:** Works with any Enumerator or stream of items.
-
-### Where to Place in README
-
-Include this section under a new heading such as **"Streaming Support"** or **"Handling Large Files"**, ideally after the **Usage** section, to explain how large datasets are processed efficiently.
 ---
-
 ## Input Format
 
 Each line represents one item:
