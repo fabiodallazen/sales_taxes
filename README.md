@@ -22,6 +22,7 @@ This project is built **without any external libraries** (except for RSpec for t
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Streaming Support (Memory-Efficient Version)](#streaming-support-memory-efficient-version)
 - [Input Format](#input-format)
 - [Output Format](#output-format)
 - [Example](#example)
@@ -63,6 +64,47 @@ ruby main.rb input1.txt
 
 The program will parse the items, calculate taxes, and print the receipt to stdout.
 
+---
+
+## Streaming Support (Memory-Efficient Version)
+
+This section describes how the Sales Taxes application handles large input files using **streaming**, ensuring memory usage remains constant regardless of file size.
+
+### How it Works
+
+1. **File Reading**
+    - Instead of reading the entire file into memory (`File.readlines`), the application uses `File.foreach`.
+    - This reads **one line at a time**, feeding it directly to the parser.
+
+2. **Parsing**
+    - Each line is parsed incrementally using `Parser.parse_line`.
+    - An Enumerator is used to yield `Item` objects one by one.
+
+3. **Receipt Generation**
+    - The `Receipt` class receives an Enumerator of items.
+    - It generates receipt lines and accumulates totals **on the fly**, without storing all lines in memory.
+
+4. **Output**
+    - The main script iterates over `receipt.lines` and prints each line immediately.
+
+### Example
+
+```ruby
+items_enum = parse_file_stream('input.txt')
+receipt = Receipt.new(items_enum)
+receipt.lines.each { |line| puts line }
+```
+
+### Benefits
+
+- **Memory-efficient:** Can handle files with millions of items.
+- **SOLID-compliant:** `Receipt` handles data generation; `main.rb` handles output.
+- **Testable:** Lines can be iterated and asserted without relying on console output.
+- **Flexible:** Works with any Enumerator or stream of items.
+
+### Where to Place in README
+
+Include this section under a new heading such as **"Streaming Support"** or **"Handling Large Files"**, ideally after the **Usage** section, to explain how large datasets are processed efficiently.
 ---
 
 ## Input Format
