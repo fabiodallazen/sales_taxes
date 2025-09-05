@@ -41,7 +41,7 @@ Ensure you have a compatible version installed before running the application:
 1. Clone the repository:
 
 ```bash
-git clone <repository_url>
+git clone git@github.com:fabiodallazen/sales_taxes.git
 cd sales_taxes
 ```
 
