@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Item do
-  let(:item) { described_class.new(quantity: 2, name: 'book', price: 12.49, imported: false, exempt: true) }
+  subject(:item) { described_class.new(quantity: 2, name: 'book', price: 12.49, imported: false, exempt: true) }
 
   it 'stores the quantity correctly' do
     expect(item.quantity).to eq(2)
